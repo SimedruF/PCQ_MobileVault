@@ -85,10 +85,10 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
       final success = await authService.authenticate(_passwordController.text);
       
       if (!success) {
-        _showErrorSnackBar('Parolă incorectă');
+        _showErrorSnackBar('Incorrect password');
       }
     } catch (e) {
-      _showErrorSnackBar('Eroare la autentificare: $e');
+      _showErrorSnackBar('Authentication error: $e');
     }
 
     setState(() {
@@ -166,7 +166,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                             Text(
                               _isFirstTime 
                                   ? 'Configurează parola principală'
-                                  : 'Introdu parola pentru acces',
+                                  : 'Enter password for access',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
@@ -174,12 +174,12 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 32),
                             
-                            // Câmp parolă
+                            // Password field
                             TextFormField(
                               controller: _passwordController,
                               obscureText: _isObscured,
                               decoration: InputDecoration(
-                                labelText: _isFirstTime ? 'Parolă nouă' : 'Parolă',
+                                labelText: _isFirstTime ? 'New password' : 'Password',
                                 prefixIcon: const Icon(Icons.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
@@ -202,7 +202,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                               },
                             ),
                             
-                            // Câmp confirmare parolă (doar pentru prima configurare)
+                            // Password confirmation field (only for first setup)
                             if (_isFirstTime) ...[
                               const SizedBox(height: 16),
                               TextFormField(
@@ -272,7 +272,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Informații despre securitate',
+                                          'Security Information',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(context).colorScheme.primary,
@@ -282,7 +282,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      'Parola va fi folosită pentru protejarea arhivelor tale criptate. '
+                                      'The password will be used to protect your encrypted archives. '
                                       'Asigură-te că o ții în siguranță - nu poate fi recuperată dacă o uiți.',
                                       style: TextStyle(
                                         fontSize: 12,

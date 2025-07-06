@@ -40,7 +40,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
       setState(() {
         _isLoading = false;
       });
-      _showErrorSnackBar('Eroare la încărcarea cheilor: $e');
+      _showErrorSnackBar('Error loading keys: $e');
     }
   }
 
@@ -66,10 +66,10 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
 
         await databaseService.insertCryptoKey(newKey);
         
-        _showSuccessSnackBar('Cheia a fost generată cu succes');
+        _showSuccessSnackBar('Key was generated successfully');
         _loadKeys();
       } catch (e) {
-        _showErrorSnackBar('Eroare la generarea cheii: $e');
+        _showErrorSnackBar('Error generating key: $e');
       }
 
       setState(() {
@@ -82,9 +82,9 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmare ștergere'),
-        content: Text('Ești sigur că vrei să ștergi cheia "${key.name}"?\n\n'
-            'ATENȚIE: Arhivele criptate cu această cheie nu vor mai putea fi decriptate!'),
+        title: const Text('Confirm deletion'),
+        content: Text('Are you sure you want to delete the key "${key.name}"?\n\n'
+            'WARNING: Archives encrypted with this key will no longer be decryptable!'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -93,7 +93,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Șterge'),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -104,10 +104,10 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
         final databaseService = Provider.of<DatabaseService>(context, listen: false);
         await databaseService.deleteCryptoKey(key.id);
         
-        _showSuccessSnackBar('Cheia a fost ștearsă');
+        _showSuccessSnackBar('Key was deleted');
         _loadKeys();
       } catch (e) {
-        _showErrorSnackBar('Eroare la ștergerea cheii: $e');
+        _showErrorSnackBar('Error deleting key: $e');
       }
     }
   }
@@ -117,10 +117,10 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
       final databaseService = Provider.of<DatabaseService>(context, listen: false);
       await databaseService.setDefaultCryptoKey(key.id);
       
-      _showSuccessSnackBar('Cheia implicită a fost setată');
+      _showSuccessSnackBar('Default key was set');
       _loadKeys();
     } catch (e) {
-      _showErrorSnackBar('Eroare la setarea cheii implicite: $e');
+      _showErrorSnackBar('Error setting default key: $e');
     }
   }
 
@@ -199,7 +199,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Apasă + pentru a genera prima cheie',
+            'Press + to generate your first key',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -306,7 +306,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
                         children: [
                           Icon(Icons.delete, color: Colors.red),
                           SizedBox(width: 8),
-                          Text('Șterge', style: TextStyle(color: Colors.red)),
+                          Text('Delete', style: TextStyle(color: Colors.red)),
                         ],
                       ),
                     ),
@@ -376,7 +376,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Despre criptografia post-cuantică'),
+        title: const Text('About post-quantum cryptography'),
         content: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +398,7 @@ class _KeysManagementScreenState extends State<KeysManagementScreen> {
               Text('• Falcon: Algoritm de semnătură compact'),
               SizedBox(height: 16),
               Text(
-                'Fiecare algoritm oferă diferite nivele de securitate și performanță.',
+                'Each algorithm offers different levels of security and performance.',
                 style: TextStyle(fontSize: 14),
               ),
             ],
@@ -436,7 +436,7 @@ class _KeyGenerationDialogState extends State<_KeyGenerationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Generează o cheie nouă'),
+      title: const Text('Generate a new key'),
       content: Form(
         key: _formKey,
         child: Column(
@@ -478,7 +478,7 @@ class _KeyGenerationDialogState extends State<_KeyGenerationDialog> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Puterea algoritmului: ${_getAlgorithmStrength(_selectedAlgorithm)} biți',
+              'Algorithm strength: ${_getAlgorithmStrength(_selectedAlgorithm)} bits',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -500,7 +500,7 @@ class _KeyGenerationDialogState extends State<_KeyGenerationDialog> {
               });
             }
           },
-          child: const Text('Generează'),
+          child: const Text('Generate'),
         ),
       ],
     );

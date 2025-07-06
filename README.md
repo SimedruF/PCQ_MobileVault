@@ -1,174 +1,174 @@
 # PQC Mobile Vault
 
-O aplicație Flutter modernă pentru administrarea arhivelor criptate cu algoritmi post-cuantici (PQC), oferind securitate de vârf împotriva atacurilor calculatoarelor cuantice.
+A modern Flutter application for managing encrypted archives with post-quantum cryptography (PQC) algorithms, providing top-tier security against quantum computer attacks.
 
-## 🔐 Caracteristici principale
+## 🔐 Main Features
 
-### Securitate avansată
-- **Criptografie post-cuantică**: Suport pentru algoritmi Kyber, Dilithium și Falcon
-- **Criptare hibridă**: Combinație AES + PQC pentru performanță și securitate optimă
-- **Autentificare securizată**: Parole principale cu hashing SHA-256
-- **Protecție împotriva atacurilor cuantice**: Pregătit pentru viitorul computing-ului cuantic
+### Advanced Security
+- **Post-Quantum Cryptography**: Support for Kyber, Dilithium, and Falcon algorithms
+- **Hybrid Encryption**: AES + PQC combination for optimal performance and security
+- **Secure Authentication**: Master passwords with SHA-256 hashing
+- **Quantum Attack Protection**: Ready for the future of quantum computing
 
-### Gestionarea arhivelor
-- **Creare arhive**: Criptarea fișierelor și directoarelor în arhive securizate
-- **Extragere securizată**: Decriptarea și extragerea arhivelor cu chei corecte
-- **Compresie inteligentă**: Compresie ZIP înainte de criptare
-- **Verificare integritate**: Hash-uri SHA-256 pentru validarea datelor
+### Archive Management
+- **Archive Creation**: Encryption of files and directories into secure archives
+- **Secure Extraction**: Decryption and extraction of archives with correct keys
+- **Smart Compression**: ZIP compression before encryption
+- **Integrity Verification**: SHA-256 hashes for data validation
 
-### Interfață intuitivă
-- **Material Design 3**: Design modern și intuitiv
-- **Tema întunecată/luminoasă**: Suport pentru preferințele utilizatorului
-- **Căutare avansată**: Filtrare rapidă a arhivelor
-- **Animații fluide**: Experiență utilizator plăcută
+### Intuitive Interface
+- **Material Design 3**: Modern and intuitive design
+- **Dark/Light Theme**: Support for user preferences
+- **Advanced Search**: Quick filtering of archives
+- **Smooth Animations**: Pleasant user experience
 
-### Gestionarea cheilor
-- **Generare sigură**: Algoritmi PQC cu diferite nivele de securitate
-- **Gestionare simplificată**: Interfață intuitivă pentru chei
-- **Backup sigur**: Stocare securizată în baza de date locală
-- **Chei multiple**: Suport pentru mai multe algoritmi simultan
+### Key Management
+- **Secure Generation**: PQC algorithms with different security levels
+- **Simplified Management**: Intuitive interface for keys
+- **Secure Backup**: Safe storage in local database
+- **Multiple Keys**: Support for multiple algorithms simultaneously
 
-## 🛠️ Algoritmi PQC suportați
+## 🛠️ Supported PQC Algorithms
 
-### Kyber (Încapsularea cheilor)
-- **Kyber-512**: Securitate echivalentă AES-128
-- **Kyber-768**: Securitate echivalentă AES-192  
-- **Kyber-1024**: Securitate echivalentă AES-256
+### Kyber (Key Encapsulation)
+- **Kyber-512**: AES-128 equivalent security
+- **Kyber-768**: AES-192 equivalent security  
+- **Kyber-1024**: AES-256 equivalent security
 
-### Dilithium (Semnături digitale)
-- **Dilithium-2**: Securitate de nivel 128-bit
-- **Dilithium-3**: Securitate de nivel 192-bit
-- **Dilithium-5**: Securitate de nivel 256-bit
+### Dilithium (Digital Signatures)
+- **Dilithium-2**: 128-bit security level
+- **Dilithium-3**: 192-bit security level
+- **Dilithium-5**: 256-bit security level
 
-### Falcon (Semnături compacte)
-- **Falcon-512**: Securitate de nivel 128-bit
-- **Falcon-1024**: Securitate de nivel 256-bit
+### Falcon (Compact Signatures)
+- **Falcon-512**: 128-bit security level
+- **Falcon-1024**: 256-bit security level
 
-## 📱 Instalare și utilizare
+## 📱 Installation and Usage
 
-### Cerințe de sistem
-- **Android**: 5.0 (API 21) sau mai recent
-- **iOS**: 11.0 sau mai recent
-- **Spațiu stocare**: Minimum 100MB
+### System Requirements
+- **Android**: 5.0 (API 21) or newer
+- **iOS**: 11.0 or newer
+- **Storage Space**: Minimum 100MB
 
-### Instalare
-1. Descărcați APK-ul din secțiunea Releases
-2. Activați "Surse necunoscute" în setările Android
-3. Instalați aplicația
-4. Configurați parola principală la prima pornire
+### Installation
+1. Download the APK from the Releases section
+2. Enable "Unknown sources" in Android settings
+3. Install the application
+4. Set up master password on first launch
 
-### Prima configurare
-1. **Setați parola principală**: Alegeți o parolă puternică
-2. **Generați prima cheie**: Selectați un algoritm PQC
-3. **Testați funcționalitatea**: Creați o arhivă de test
-4. **Configurați setările**: Personalizați aplicația
+### Initial Setup
+1. **Set master password**: Choose a strong password
+2. **Generate first key**: Select a PQC algorithm
+3. **Test functionality**: Create a test archive
+4. **Configure settings**: Customize the application
 
-## 🔧 Dezvoltare
+## 🔧 Development
 
-### Tehnologii utilizate
-- **Flutter**: Framework UI cross-platform
-- **Dart**: Limbaj de programare principal
-- **SQLite**: Baza de date locală
-- **PointyCastle**: Biblioteci criptografice
-- **Material Design 3**: Sistem de design
+### Technologies Used
+- **Flutter**: Cross-platform UI framework
+- **Dart**: Main programming language
+- **SQLite**: Local database
+- **PointyCastle**: Cryptographic libraries
+- **Material Design 3**: Design system
 
-### Structura proiectului
+### Project Structure
 ```
 lib/
-├── models/          # Modele de date
-├── services/        # Servicii business
-├── screens/         # Ecrane UI
-├── widgets/         # Widget-uri reutilizabile
-├── crypto/          # Implementări criptografice
-└── main.dart        # Punct de intrare
+├── models/          # Data models
+├── services/        # Business services
+├── screens/         # UI screens
+├── widgets/         # Reusable widgets
+├── crypto/          # Cryptographic implementations
+└── main.dart        # Entry point
 ```
 
-### Instalare pentru dezvoltatori
+### Installation for Developers
 ```bash
-# Clonează repository-ul
+# Clone the repository
 git clone https://github.com/user/pcq-mobile-vault.git
 
-# Intră în director
+# Enter directory
 cd pcq-mobile-vault
 
-# Instalează dependințele
+# Install dependencies
 flutter pub get
 
-# Rulează aplicația
+# Run the application
 flutter run
 ```
 
-## 🔒 Securitate și privacy
+## 🔒 Security and Privacy
 
-### Principii de securitate
-- **Zero-knowledge**: Parolele nu sunt stocate în formă deschisă
-- **Criptare locală**: Toate datele sunt criptate local
-- **Fără cloud**: Datele rămân pe dispozitivul utilizatorului
-- **Audit open-source**: Codul este disponibil pentru verificare
+### Security Principles
+- **Zero-knowledge**: Passwords are not stored in plain text
+- **Local encryption**: All data is encrypted locally
+- **No cloud**: Data remains on user's device
+- **Open-source audit**: Code is available for verification
 
-### Considerații importante
-- **Backup-uri**: Faceți backup la chei în mod regulat
-- **Parole puternice**: Folosiți parole de cel puțin 12 caractere
-- **Actualizări**: Mențineți aplicația la zi
-- **Siguranța dispozitivului**: Folosiți blocarea ecranului
+### Important Considerations
+- **Backups**: Backup keys regularly
+- **Strong passwords**: Use passwords of at least 12 characters
+- **Updates**: Keep the application up to date
+- **Device security**: Use screen locking
 
-## 🤝 Contribuții
+## 🤝 Contributions
 
-Contribuțiile sunt binevenite! Vă rugăm să:
+Contributions are welcome! Please:
 
-1. Fork-uiți repository-ul
-2. Creați o ramură pentru feature (`git checkout -b feature/new-feature`)
-3. Commit-uiți modificările (`git commit -am 'Add new feature'`)
-4. Push-uiți la ramură (`git push origin feature/new-feature`)
-5. Creați un Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Create a Pull Request
 
-### Ghid pentru contribuitori
-- Respectați convențiile de cod Dart
-- Adăugați teste pentru funcționalități noi
-- Documentați modificările în comentarii
-- Testați pe multiple platforme
+### Contributor Guide
+- Follow Dart code conventions
+- Add tests for new features
+- Document changes in comments
+- Test on multiple platforms
 
-## 📄 Licență
+## 📄 License
 
-Acest proiect este licențiat sub licența MIT. Vedeți fișierul [LICENSE](LICENSE) pentru detalii.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 📞 Suport
+## 📞 Support
 
-Pentru întrebări, probleme sau sugestii:
-- **Issues**: Folosiți GitHub Issues
-- **Discussions**: Forum comunitate pe GitHub
+For questions, issues, or suggestions:
+- **Issues**: Use GitHub Issues
+- **Discussions**: Community forum on GitHub
 - **Email**: support@pcq-mobile-vault.com
 
 ## 🚀 Roadmap
 
-### Versiunea 1.1
-- [ ] Suport pentru semnături digitale
-- [ ] Backup în cloud criptat
-- [ ] Autentificare biometrică
-- [ ] Partajare securizată
+### Version 1.1
+- [ ] Digital signature support
+- [ ] Encrypted cloud backup
+- [ ] Biometric authentication
+- [ ] Secure sharing
 
-### Versiunea 1.2
-- [ ] Plugin pentru manageri de fișiere
-- [ ] Integrare cu servicii cloud
-- [ ] Audit log complet
-- [ ] Suport pentru HSM
+### Version 1.2
+- [ ] File manager plugins
+- [ ] Cloud service integration
+- [ ] Complete audit log
+- [ ] HSM support
 
-### Versiunea 2.0
-- [ ] Arhitectură distribuită
-- [ ] Suport pentru echipe
-- [ ] API pentru integrări
-- [ ] Versiune desktop
+### Version 2.0
+- [ ] Distributed architecture
+- [ ] Team support
+- [ ] Integration API
+- [ ] Desktop version
 
-## 🌟 Mulțumiri
+## 🌟 Acknowledgments
 
-Mulțumim comunității open-source pentru:
-- **Flutter Team**: Framework excelent
-- **PointyCastle**: Implementări criptografice
-- **Material Design**: Sistem de design modern
-- **Comunitatea PQC**: Cercetare în criptografie post-cuantică
+Thanks to the open-source community for:
+- **Flutter Team**: Excellent framework
+- **PointyCastle**: Cryptographic implementations
+- **Material Design**: Modern design system
+- **PQC Community**: Research in post-quantum cryptography
 
 ---
 
-**Nota**: Această aplicație este în dezvoltare activă. Funcționalitățile PQC sunt implementate în scop educativ și demonstrativ. Pentru utilizare în producție, recomandăm utilizarea bibliotecilor PQC certificate și auditate.
+**Note**: This application is in active development. PQC functionalities are implemented for educational and demonstrative purposes. For production use, we recommend using certified and audited PQC libraries.
 
-**Disclaimer**: Autorii nu își asumă responsabilitatea pentru pierderea datelor sau problemele de securitate. Utilizați pe propria răspundere și faceți backup-uri regulate.
+**Disclaimer**: The authors do not assume responsibility for data loss or security issues. Use at your own risk and make regular backups.

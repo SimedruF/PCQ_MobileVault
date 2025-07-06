@@ -10,8 +10,8 @@ import 'services/crypto_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Inițializează serviciile
-  final secureStorage = FlutterSecureStorage();
+  // Initialize services
+  const secureStorage = FlutterSecureStorage();
   final databaseService = DatabaseService();
   final cryptoService = CryptoService();
   final authService = AuthService(secureStorage);
@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
   final CryptoService cryptoService;
 
   const MyApp({
-    Key? key,
+    super.key,
     required this.authService,
     required this.databaseService,
     required this.cryptoService,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

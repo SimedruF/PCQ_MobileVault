@@ -15,7 +15,7 @@ class FileService {
 
   FileService(this._cryptoService, this._databaseService);
 
-  // Obține directorul pentru stocarea fișierelor criptate
+  // Gets directory for storing encrypted files
   Future<Directory> get _vaultDirectory async {
     final appDir = await getApplicationDocumentsDirectory();
     final vaultDir = Directory('${appDir.path}/pcq_vault');
@@ -25,16 +25,16 @@ class FileService {
     return vaultDir;
   }
 
-  // Solicită permisiuni pentru accesarea fișierelor
+  // Requests permissions for file access
   Future<bool> requestStoragePermissions() async {
     if (Platform.isAndroid) {
       final status = await Permission.storage.request();
       return status.isGranted;
     }
-    return true; // iOS nu necesită permisiuni explicite pentru document picker
+    return true; // iOS doesn't require explicit permissions for document picker
   }
 
-  // Selectează fișiere pentru adăugarea în arhivă
+  // Selects files for adding to archive
   Future<List<File>?> pickFiles() async {
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -50,11 +50,11 @@ class FileService {
       }
       return null;
     } catch (e) {
-      throw Exception('Eroare la selectarea fișierelor: $e');
+      throw Exception('Error selecting files: $e');
     }
   }
 
-  // Selectează un director pentru adăugarea în arhivă
+  // Selects a directory for adding to archive
   Future<Directory?> pickDirectory() async {
     try {
       final result = await FilePicker.platform.getDirectoryPath();
@@ -63,11 +63,11 @@ class FileService {
       }
       return null;
     } catch (e) {
-      throw Exception('Eroare la selectarea directorului: $e');
+      throw Exception('Error selecting directory: $e');
     }
   }
 
-  // Creează o arhivă criptată din fișiere selectate
+  // Creates an encrypted archive from selected files
   Future<EncryptedArchive> createEncryptedArchive({
     required List<File> files,
     required String archiveName,
@@ -75,7 +75,7 @@ class FileService {
     required CryptoKey cryptoKey,
   }) async {
     try {
-      // Creează arhiva ZIP
+      // Create ZIP archive
       final archive = Archive();
       int totalSize = 0;
 
@@ -88,22 +88,22 @@ class FileService {
         }
       }
 
-      // Comprimă arhiva
+      // Compress archive
       final zipBytes = Uint8List.fromList(ZipEncoder().encode(archive)!);
 
-      // Criptează arhiva
+      // Encrypt archive
       final encryptedBytes = await _cryptoService.encryptData(
         zipBytes,
         cryptoKey.publicKey,
       );
 
-      // Salvează fișierul criptat
+      // Save encrypted file
       final vaultDir = await _vaultDirectory;
       final fileName = '${DateTime.now().millisecondsSinceEpoch}_$archiveName.pcqv';
       final encryptedFile = File('${vaultDir.path}/$fileName');
       await encryptedFile.writeAsBytes(encryptedBytes);
 
-      // Creează înregistrarea în baza de date
+      // Create database record
       final encryptedArchive = EncryptedArchive(
         name: archiveName,
         description: description,
@@ -118,11 +118,11 @@ class FileService {
       final id = await _databaseService.insertArchive(encryptedArchive);
       return encryptedArchive.copyWith(id: id);
     } catch (e) {
-      throw Exception('Eroare la crearea arhivei criptate: $e');
+      throw Exception('Error creating encrypted archive: $e');
     }
   }
 
-  // Adaugă un director întreg într-o arhivă criptată
+  // Adds an entire directory to an encrypted archive
   Future<EncryptedArchive> createEncryptedArchiveFromDirectory({
     required Directory directory,
     required String archiveName,
@@ -144,14 +144,14 @@ class FileService {
         }
       }
 
-      // Comprimă și criptează
+      // Compress and encrypt
       final zipBytes = Uint8List.fromList(ZipEncoder().encode(archive)!);
       final encryptedBytes = await _cryptoService.encryptData(
         zipBytes,
         cryptoKey.publicKey,
       );
 
-      // Salvează
+      // Save
       final vaultDir = await _vaultDirectory;
       final fileName = '${DateTime.now().millisecondsSinceEpoch}_$archiveName.pcqv';
       final encryptedFile = File('${vaultDir.path}/$fileName');
@@ -171,35 +171,35 @@ class FileService {
       final id = await _databaseService.insertArchive(encryptedArchive);
       return encryptedArchive.copyWith(id: id);
     } catch (e) {
-      throw Exception('Eroare la crearea arhivei din director: $e');
+      throw Exception('Error creating archive from directory: $e');
     }
   }
 
-  // Extrage arhiva criptată
+  // Extracts encrypted archive
   Future<Directory> extractEncryptedArchive({
     required EncryptedArchive archive,
     required CryptoKey cryptoKey,
     Directory? extractToDirectory,
   }) async {
     try {
-      // Citește fișierul criptat
+      // Read encrypted file
       final encryptedFile = File(archive.filePath);
       if (!await encryptedFile.exists()) {
-        throw Exception('Fișierul arhivei nu există');
+        throw Exception('Archive file does not exist');
       }
 
       final encryptedBytes = await encryptedFile.readAsBytes();
 
-      // Decriptează
+      // Decrypt
       final decryptedBytes = await _cryptoService.decryptData(
         encryptedBytes,
         cryptoKey.privateKey,
       );
 
-      // Decomprimă arhiva
+      // Decompress archive
       final archiveData = ZipDecoder().decodeBytes(decryptedBytes);
 
-      // Determină directorul de extragere
+      // Determine extraction directory
       final extractDir = extractToDirectory ?? 
           await _getDefaultExtractionDirectory(archive.name);
 
@@ -207,12 +207,12 @@ class FileService {
         await extractDir.create(recursive: true);
       }
 
-      // Extrage fișierele
+      // Extract files
       for (final file in archiveData) {
         if (file.isFile) {
           final extractedFile = File('${extractDir.path}/${file.name}');
           
-          // Creează directoarele părinte dacă este necesar
+          // Create parent directories if necessary
           final parentDir = extractedFile.parent;
           if (!await parentDir.exists()) {
             await parentDir.create(recursive: true);
@@ -224,11 +224,11 @@ class FileService {
 
       return extractDir;
     } catch (e) {
-      throw Exception('Eroare la extragerea arhivei: $e');
+      throw Exception('Error extracting archive: $e');
     }
   }
 
-  // Listează conținutul unei arhive fără a o extrage
+  // Lists the contents of an archive without extracting it
   Future<List<ArchiveFileInfo>> listArchiveContents({
     required EncryptedArchive archive,
     required CryptoKey cryptoKey,
@@ -256,29 +256,29 @@ class FileService {
               ))
           .toList();
     } catch (e) {
-      throw Exception('Eroare la listarea conținutului arhivei: $e');
+      throw Exception('Error listing archive contents: $e');
     }
   }
 
-  // Șterge o arhivă criptată
+  // Deletes an encrypted archive
   Future<void> deleteEncryptedArchive(EncryptedArchive archive) async {
     try {
-      // Șterge fișierul de pe disk
+      // Delete the file from disk
       final file = File(archive.filePath);
       if (await file.exists()) {
         await file.delete();
       }
 
-      // Șterge înregistrarea din baza de date
+      // Delete the record from database
       if (archive.id != null) {
         await _databaseService.deleteArchive(archive.id!);
       }
     } catch (e) {
-      throw Exception('Eroare la ștergerea arhivei: $e');
+      throw Exception('Error deleting archive: $e');
     }
   }
 
-  // Obține toate fișierele dintr-un director recursiv
+  // Gets all files from a directory recursively
   Future<List<File>> _getAllFilesFromDirectory(Directory directory) async {
     final files = <File>[];
     
@@ -291,14 +291,14 @@ class FileService {
     return files;
   }
 
-  // Obține directorul implicit pentru extragere
+  // Gets the default directory for extraction
   Future<Directory> _getDefaultExtractionDirectory(String archiveName) async {
     final documentsDir = await getApplicationDocumentsDirectory();
     final extractionDir = Directory('${documentsDir.path}/extractions/$archiveName');
     return extractionDir;
   }
 
-  // Calculează mărimea unei arhive criptate
+  // Calculates the size of an encrypted archive
   Future<int> getArchiveFileSize(String filePath) async {
     final file = File(filePath);
     if (await file.exists()) {
@@ -307,7 +307,7 @@ class FileService {
     return 0;
   }
 
-  // Verifică dacă o arhivă este validă
+  // Checks if an archive is valid
   Future<bool> validateArchive(EncryptedArchive archive) async {
     try {
       final file = File(archive.filePath);
@@ -317,7 +317,7 @@ class FileService {
     }
   }
 
-  // Exportă o arhivă într-o locație externă
+  // Exports an archive to an external location
   Future<String?> exportArchive(EncryptedArchive archive) async {
     try {
       final result = await FilePicker.platform.saveFile(
@@ -333,11 +333,11 @@ class FileService {
       }
       return null;
     } catch (e) {
-      throw Exception('Eroare la exportarea arhivei: $e');
+      throw Exception('Error exporting archive: $e');
     }
   }
 
-  // Importă o arhivă dintr-o locație externă
+  // Imports an archive from an external location
   Future<EncryptedArchive?> importArchive() async {
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -348,23 +348,23 @@ class FileService {
       if (result != null && result.files.single.path != null) {
         final sourceFile = File(result.files.single.path!);
         
-        // Copiază fișierul în directorul vault
+        // Copy the file to the vault directory
         final vaultDir = await _vaultDirectory;
         final fileName = '${DateTime.now().millisecondsSinceEpoch}_imported.pcqv';
         final targetFile = File('${vaultDir.path}/$fileName');
         await sourceFile.copy(targetFile.path);
 
         // Creează înregistrarea în baza de date
-        // Nota: va trebui să selectezi manual cheia pentru decriptare
+        // Note: you will need to manually select the key for decryption
         final archive = EncryptedArchive(
           name: result.files.single.name.replaceAll('.pcqv', ''),
-          description: 'Arhivă importată',
+          description: 'Imported archive',
           filePath: targetFile.path,
           size: await targetFile.length(),
           createdAt: DateTime.now(),
           modifiedAt: DateTime.now(),
-          algorithm: 'Unknown', // va fi actualizat când selectezi cheia
-          keyId: '', // va fi actualizat când selectezi cheia
+          algorithm: 'Unknown', // will be updated when you select the key
+          keyId: '', // will be updated when you select the key
         );
 
         final id = await _databaseService.insertArchive(archive);
@@ -372,7 +372,7 @@ class FileService {
       }
       return null;
     } catch (e) {
-      throw Exception('Eroare la importarea arhivei: $e');
+      throw Exception('Error importing archive: $e');
     }
   }
 }

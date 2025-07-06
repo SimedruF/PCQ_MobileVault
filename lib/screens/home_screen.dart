@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         setState(() {
           _isLoading = false;
         });
-        _showErrorSnackBar('Eroare la încărcarea arhivelor: $e');
+        _showErrorSnackBar('Error loading archives: $e');
       }
     }
   }
@@ -129,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmare ștergere'),
-        content: Text('Ești sigur că vrei să ștergi arhiva "${archive.name}"?'),
+        title: const Text('Confirm deletion'),
+        content: Text('Are you sure you want to delete the archive "${archive.name}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Șterge'),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -148,10 +148,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (confirmed == true && _fileService != null) {
       try {
         await _fileService!.deleteEncryptedArchive(archive);
-        _showSuccessSnackBar('Arhiva a fost ștearsă cu succes');
+        _showSuccessSnackBar('Archive was successfully deleted');
         _loadArchives();
       } catch (e) {
-        _showErrorSnackBar('Eroare la ștergerea arhivei: $e');
+        _showErrorSnackBar('Error deleting archive: $e');
       }
     }
   }
@@ -176,8 +176,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             const SizedBox(height: 16),
             Text(
               _searchQuery.isEmpty 
-                  ? 'Nu ai încă arhive criptate'
-                  : 'Nu s-au găsit arhive pentru "$_searchQuery"',
+                  ? 'You don\'t have encrypted archives yet'
+                  : 'No archives found for "$_searchQuery"',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             if (_searchQuery.isEmpty) ...[
               const SizedBox(height: 8),
               Text(
-                'Apasă + pentru a crea prima arhivă',
+                'Press + to create your first archive',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: _openSettings,
-            tooltip: 'Setări',
+            tooltip: 'Settings',
           ),
           PopupMenuButton<String>(
             onSelected: (value) async {
@@ -293,12 +293,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
       body: Column(
         children: [
-          // Bara de căutare
+          // Search bar
           Container(
             padding: const EdgeInsets.all(16),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Caută arhive...',
+                hintText: 'Search archives...',
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
@@ -316,14 +316,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           
-          // Conținutul principal
+          // Main content
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: [
                 _buildArchivesList(),
-                _buildArchivesList(), // Pentru moment, același conținut
-                _buildArchivesList(), // Pentru moment, același conținut
+                _buildArchivesList(), // For now, same content
+                _buildArchivesList(), // For now, same content
               ],
             ),
           ),
@@ -332,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       floatingActionButton: FloatingActionMenu(
         onCreateArchive: _openCreateArchive,
         onImportArchive: () {
-          // TODO: Implementează importul
+          // TODO: Implement import
         },
         animationController: _fabAnimationController,
       ),

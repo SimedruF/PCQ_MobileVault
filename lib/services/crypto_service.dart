@@ -8,12 +8,12 @@ import '../models/crypto_key.dart';
 class CryptoService {
   final Random _random = Random.secure();
 
-  // Generează o pereche de chei pentru algoritmi PQC simulați
+  // Generates a key pair for simulated PQC algorithms
   Future<CryptoKey> generateKeyPair(PQCAlgorithm algorithm, String keyName) async {
     final keyId = _generateKeyId();
     
-    // Simulez generarea cheilor PQC
-    // În implementarea reală, ar trebui să folosești biblioteci specializate pentru PQC
+    // Simulate PQC key generation
+    // In real implementation, you should use specialized PQC libraries
     final keyPair = await _generatePQCKeyPair(algorithm);
     
     return CryptoKey(
@@ -27,13 +27,13 @@ class CryptoService {
   }
 
   Future<_PQCKeyPair> _generatePQCKeyPair(PQCAlgorithm algorithm) async {
-    // Simulez generarea cheilor PQC cu chei RSA pentru demonstrație
-    // În implementarea reală, ar trebui să folosești biblioteci specializate
+    // Simulate PQC key generation with RSA keys for demonstration
+    // In real implementation, you should use specialized libraries
     final rsaKeyGen = RSAKeyGenerator();
     final keyGenParams = RSAKeyGeneratorParameters(
-      BigInt.parse('65537'), // exponent public standard
-      2048, // mărimea cheii în biți
-      64, // numărul de teste de primalitate
+      BigInt.parse('65537'), // standard public exponent
+      2048, // key size in bits
+      64, // number of primality tests
     );
     
     final params = ParametersWithRandom(keyGenParams, SecureRandom('Fortuna'));
@@ -71,22 +71,22 @@ class CryptoService {
     return base64Encode(utf8.encode(json.encode(keyData)));
   }
 
-  // Criptează datele folosind cheia publică
+  // Encrypts data using the public key
   Future<Uint8List> encryptData(Uint8List data, String publicKeyStr) async {
     try {
-      // Decodifică cheia publică
+      // Decode the public key
       final keyData = json.decode(utf8.decode(base64Decode(publicKeyStr)));
       final publicKey = RSAPublicKey(
         BigInt.parse(keyData['modulus']),
         BigInt.parse(keyData['exponent']),
       );
 
-      // Folosește AES pentru criptarea datelor și RSA pentru cheia AES
+      // Use AES for data encryption and RSA for AES key
       final aesKey = _generateAESKey();
       final encryptedData = _encryptWithAES(data, aesKey);
       final encryptedAESKey = _encryptAESKeyWithRSA(aesKey, publicKey);
 
-      // Combină cheia AES criptată cu datele criptate
+      // Combine encrypted AES key with encrypted data
       final result = BytesBuilder();
       result.add(_intToBytes(encryptedAESKey.length, 4));
       result.add(encryptedAESKey);
@@ -94,14 +94,14 @@ class CryptoService {
 
       return result.toBytes();
     } catch (e) {
-      throw Exception('Eroare la criptarea datelor: $e');
+      throw Exception('Error encrypting data: $e');
     }
   }
 
-  // Decriptează datele folosind cheia privată
+  // Decrypts data using the private key
   Future<Uint8List> decryptData(Uint8List encryptedData, String privateKeyStr) async {
     try {
-      // Decodifică cheia privată
+      // Decode the private key
       final keyData = json.decode(utf8.decode(base64Decode(privateKeyStr)));
       final privateKey = RSAPrivateKey(
         BigInt.parse(keyData['modulus']),
@@ -110,18 +110,18 @@ class CryptoService {
         BigInt.parse(keyData['q']),
       );
 
-      // Extrage cheia AES criptată și datele criptate
+      // Extract encrypted AES key and encrypted data
       final aesKeyLength = _bytesToInt(encryptedData.sublist(0, 4));
       final encryptedAESKey = encryptedData.sublist(4, 4 + aesKeyLength);
       final encryptedDataPart = encryptedData.sublist(4 + aesKeyLength);
 
-      // Decriptează cheia AES cu RSA
+      // Decrypt AES key with RSA
       final aesKey = _decryptAESKeyWithRSA(encryptedAESKey, privateKey);
       
-      // Decriptează datele cu AES
+      // Decrypt data with AES
       return _decryptWithAES(encryptedDataPart, aesKey);
     } catch (e) {
-      throw Exception('Eroare la decriptarea datelor: $e');
+      throw Exception('Error decrypting data: $e');
     }
   }
 
@@ -148,7 +148,7 @@ class CryptoService {
     cipher.init(true, params);
     final encryptedData = cipher.process(data);
     
-    // Combină IV cu datele criptate
+    // Combine IV with encrypted data
     final result = BytesBuilder();
     result.add(iv);
     result.add(encryptedData);
@@ -202,27 +202,27 @@ class CryptoService {
     return List.generate(16, (index) => chars[_random.nextInt(chars.length)]).join();
   }
 
-  // Calculează hash-ul unui fișier pentru verificarea integrității
+  // Calculates file hash for integrity verification
   Future<String> calculateFileHash(Uint8List data) async {
     final digest = sha256.convert(data);
     return digest.toString();
   }
 
-  // Verifică integritatea unui fișier
+  // Verifies file integrity
   Future<bool> verifyFileIntegrity(Uint8List data, String expectedHash) async {
     final actualHash = await calculateFileHash(data);
     return actualHash == expectedHash;
   }
 
-  // Estimează puterea algoritmului PQC
+  // Estimates the PQC algorithm strength
   int getAlgorithmStrength(PQCAlgorithm algorithm) {
     switch (algorithm) {
       case PQCAlgorithm.kyber512:
-        return 128; // echivalent AES-128
+        return 128; // equivalent to AES-128
       case PQCAlgorithm.kyber768:
-        return 192; // echivalent AES-192
+        return 192; // equivalent to AES-192
       case PQCAlgorithm.kyber1024:
-        return 256; // echivalent AES-256
+        return 256; // equivalent to AES-256
       case PQCAlgorithm.dilithium2:
         return 128;
       case PQCAlgorithm.dilithium3:
@@ -236,20 +236,20 @@ class CryptoService {
     }
   }
 
-  // Returnează descrierea algoritmului
+  // Returns the algorithm description
   String getAlgorithmDescription(PQCAlgorithm algorithm) {
     switch (algorithm) {
       case PQCAlgorithm.kyber512:
       case PQCAlgorithm.kyber768:
       case PQCAlgorithm.kyber1024:
-        return 'Algoritm de încapsulare a cheilor (KEM) bazat pe problema Learning With Errors';
+        return 'Key Encapsulation Mechanism (KEM) based on Learning With Errors problem';
       case PQCAlgorithm.dilithium2:
       case PQCAlgorithm.dilithium3:
       case PQCAlgorithm.dilithium5:
-        return 'Algoritm de semnătură digitală bazat pe rețele (lattice-based)';
+        return 'Lattice-based digital signature algorithm';
       case PQCAlgorithm.falcon512:
       case PQCAlgorithm.falcon1024:
-        return 'Algoritm de semnătură digitală compact bazat pe rețele';
+        return 'Compact lattice-based digital signature algorithm';
     }
   }
 }

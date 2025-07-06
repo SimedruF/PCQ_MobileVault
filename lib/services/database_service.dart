@@ -35,7 +35,7 @@ class DatabaseService {
       path,
       version: 1,
       onCreate: (Database db, int version) async {
-        // Tabelul pentru arhivele criptate
+        // Table for encrypted archives
         await db.execute('''
           CREATE TABLE encrypted_archives (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,7 +51,7 @@ class DatabaseService {
           )
         ''');
 
-        // Tabelul pentru cheile criptografice
+        // Table for cryptographic keys
         await db.execute('''
           CREATE TABLE crypto_keys (
             id TEXT PRIMARY KEY,
@@ -64,7 +64,7 @@ class DatabaseService {
           )
         ''');
 
-        // Indexuri pentru performanță
+        // Indexes for performance
         await db.execute('CREATE INDEX idx_archives_name ON encrypted_archives(name)');
         await db.execute('CREATE INDEX idx_archives_created ON encrypted_archives(createdAt)');
         await db.execute('CREATE INDEX idx_keys_algorithm ON crypto_keys(algorithm)');
@@ -72,7 +72,7 @@ class DatabaseService {
     );
   }
 
-  // Operații pentru arhive
+  // Operations for archives
   Future<int> insertArchive(EncryptedArchive archive) async {
     final db = await database;
     return await db.insert('encrypted_archives', archive.toMap());
@@ -138,7 +138,7 @@ class DatabaseService {
     );
   }
 
-  // Operații pentru chei criptografice
+  // Operations for cryptographic keys
   Future<void> insertCryptoKey(CryptoKey key) async {
     final db = await database;
     await db.insert('crypto_keys', key.toMap());
@@ -212,7 +212,7 @@ class DatabaseService {
   Future<void> setDefaultCryptoKey(String keyId) async {
     final db = await database;
     
-    // Resetează toate cheile ca non-default
+    // Reset all keys as non-default
     await db.update(
       'crypto_keys',
       {'isDefault': 0},
@@ -220,7 +220,7 @@ class DatabaseService {
       whereArgs: [1],
     );
     
-    // Setează noua cheie ca default
+    // Set the new key as default
     await db.update(
       'crypto_keys',
       {'isDefault': 1},

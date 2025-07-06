@@ -24,7 +24,7 @@ class _FloatingActionMenuState extends State<FloatingActionMenu> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Buton pentru importare
+        // Button for import
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           transform: Matrix4.translationValues(
@@ -47,7 +47,7 @@ class _FloatingActionMenuState extends State<FloatingActionMenu> {
         
         const SizedBox(height: 8),
         
-        // Buton pentru creare arhivă
+        // Button for archive creation
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           transform: Matrix4.translationValues(

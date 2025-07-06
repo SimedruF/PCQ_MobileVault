@@ -20,13 +20,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Setări'),
+        title: const Text('Settings'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Securitate
-          _buildSectionHeader('Securitate'),
+          // Security
+          _buildSectionHeader('Security'),
           Card(
             child: Column(
               children: [
@@ -83,15 +83,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           
           const SizedBox(height: 16),
           
-          // Fișiere
-          _buildSectionHeader('Fișiere'),
+          // Files
+          _buildSectionHeader('Files'),
           Card(
             child: Column(
               children: [
                 ListTile(
                   leading: const Icon(Icons.visibility),
-                  title: const Text('Afișează fișiere ascunse'),
-                  subtitle: const Text('Afișează fișierele care încep cu "."'),
+                  title: const Text('Show hidden files'),
+                  subtitle: const Text('Show files that start with "."'),
                   trailing: Switch(
                     value: _showHiddenFiles,
                     onChanged: (value) {
@@ -105,7 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ListTile(
                   leading: const Icon(Icons.cleaning_services),
                   title: const Text('Curăță cache-ul'),
-                  subtitle: const Text('Șterge fișierele temporare'),
+                  subtitle: const Text('Delete temporary files'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () => _showClearCacheDialog(),
                 ),
@@ -115,8 +115,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           
           const SizedBox(height: 16),
           
-          // Despre
-          _buildSectionHeader('Despre'),
+          // About
+          _buildSectionHeader('About'),
           Card(
             child: Column(
               children: [
@@ -130,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.security),
-                  title: const Text('Despre PQC'),
+                  title: const Text('About PQC'),
                   subtitle: const Text('Criptografia post-cuantică'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () => _showPQCInfoDialog(),
@@ -149,15 +149,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           
           const SizedBox(height: 16),
           
-          // Acțiuni periculoase
-          _buildSectionHeader('Acțiuni periculoase'),
+          // Dangerous actions
+          _buildSectionHeader('Dangerous actions'),
           Card(
             child: Column(
               children: [
                 ListTile(
                   leading: const Icon(Icons.delete_forever, color: Colors.red),
-                  title: const Text('Resetează aplicația', style: TextStyle(color: Colors.red)),
-                  subtitle: const Text('Șterge toate datele și setările'),
+                  title: const Text('Reset application', style: TextStyle(color: Colors.red)),
+                  subtitle: const Text('Delete all data and settings'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () => _showResetDialog(),
                 ),
@@ -343,7 +343,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Curăță cache-ul'),
-        content: const Text('Această acțiune va șterge toate fișierele temporare. Continui?'),
+        content: const Text('This action will delete all temporary files. Continue?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -365,15 +365,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Despre PQC Mobile Vault'),
+        title: const Text('About PQC Mobile Vault'),
         content: const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('PQC Mobile Vault v1.0.0'),
             SizedBox(height: 8),
-            Text('O aplicație pentru administrarea arhivelor criptate cu algoritmi '
-                'post-cuantici, oferind securitate împotriva atacurilor calculatoarelor cuantice.'),
+            Text('An application for managing archives encrypted with post-quantum '
+                'algorithms, providing security against quantum computer attacks.'),
             SizedBox(height: 16),
             Text('Dezvoltat cu Flutter'),
             Text('© 2024 PQC Mobile Vault'),
@@ -477,10 +477,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Resetează aplicația'),
+        title: const Text('Reset application'),
         content: const Text(
-          'ATENȚIE: Această acțiune va șterge TOATE datele din aplicație, '
-          'inclusiv arhivele criptate și cheile. Această acțiune nu poate fi anulată.\n\n'
+          'WARNING: This action will delete ALL data from the application, '
+          'including encrypted archives and keys. This action cannot be undone.\n\n'
           'Ești sigur că vrei să continui?',
         ),
         actions: [

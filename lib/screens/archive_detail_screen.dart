@@ -54,7 +54,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
       setState(() {
         _isLoading = false;
       });
-      _showErrorSnackBar('Eroare la încărcarea cheii: $e');
+      _showErrorSnackBar('Error loading key: $e');
     }
   }
 
@@ -79,7 +79,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
       setState(() {
         _isLoading = false;
       });
-      _showErrorSnackBar('Eroare la încărcarea conținutului arhivei: $e');
+      _showErrorSnackBar('Error loading archive contents: $e');
     }
   }
 
@@ -96,9 +96,9 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
         cryptoKey: _cryptoKey!,
       );
       
-      _showSuccessSnackBar('Arhiva a fost extrasă în: ${extractedDir.path}');
+      _showSuccessSnackBar('Archive was extracted to: ${extractedDir.path}');
     } catch (e) {
-      _showErrorSnackBar('Eroare la extragerea arhivei: $e');
+      _showErrorSnackBar('Error extracting archive: $e');
     }
 
     setState(() {
@@ -112,10 +112,10 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
     try {
       final exportPath = await _fileService!.exportArchive(widget.archive);
       if (exportPath != null) {
-        _showSuccessSnackBar('Arhiva a fost exportată în: $exportPath');
+        _showSuccessSnackBar('Archive was exported to: $exportPath');
       }
     } catch (e) {
-      _showErrorSnackBar('Eroare la exportarea arhivei: $e');
+      _showErrorSnackBar('Error exporting archive: $e');
     }
   }
 
@@ -162,7 +162,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                   children: [
                     Icon(Icons.file_download),
                     SizedBox(width: 8),
-                    Text('Exportă'),
+                    Text('Export'),
                   ],
                 ),
               ),
@@ -177,7 +177,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Informații generale
+                  // General information
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
@@ -215,10 +215,10 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                           const Divider(height: 32),
                           _buildInfoRow('Mărime', widget.archive.sizeFormatted),
                           _buildInfoRow('Creat la', dateFormat.format(widget.archive.createdAt)),
-                          _buildInfoRow('Modificat la', dateFormat.format(widget.archive.modifiedAt)),
+                          _buildInfoRow('Modified at', dateFormat.format(widget.archive.modifiedAt)),
                           _buildInfoRow('Algoritm', widget.archive.algorithm),
                           if (_cryptoKey != null)
-                            _buildInfoRow('Cheia', _cryptoKey!.name),
+                            _buildInfoRow('Key', _cryptoKey!.name),
                         ],
                       ),
                     ),
@@ -226,7 +226,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                   
                   const SizedBox(height: 16),
                   
-                  // Acțiuni
+                  // Actions
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
@@ -234,7 +234,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Acțiuni',
+                            'Actions',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 16),
@@ -262,7 +262,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                                       ? _loadArchiveContents
                                       : null,
                                   icon: const Icon(Icons.list),
-                                  label: const Text('Vezi conținutul'),
+                                  label: const Text('View contents'),
                                 ),
                               ),
                             ],
@@ -272,7 +272,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                     ),
                   ),
                   
-                  // Conținutul arhivei
+                  // Archive contents
                   if (_archiveContents != null) ...[
                     const SizedBox(height: 16),
                     Card(
@@ -282,7 +282,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Conținutul arhivei (${_archiveContents!.length} fișiere)',
+                              'Archive contents (${_archiveContents!.length} files)',
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const SizedBox(height: 16),
@@ -314,7 +314,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                     ),
                   ],
                   
-                  // Informații despre securitate
+                  // Security information
                   const SizedBox(height: 16),
                   Card(
                     child: Padding(
@@ -330,7 +330,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'Informații despre securitate',
+                                'Security Information',
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ],
@@ -338,9 +338,9 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                           const SizedBox(height: 16),
                           if (_cryptoKey != null) ...[
                             _buildSecurityInfo('Algoritm PQC', widget.archive.algorithm),
-                            _buildSecurityInfo('Puterea algoritmului', 
+                            _buildSecurityInfo('Algorithm strength', 
                                 '${Provider.of<CryptoService>(context, listen: false).getAlgorithmStrength(PQCAlgorithm.fromString(widget.archive.algorithm))} biți'),
-                            _buildSecurityInfo('ID cheie', widget.archive.keyId),
+                            _buildSecurityInfo('Key ID', widget.archive.keyId),
                             const SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.all(12),
@@ -355,7 +355,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      'Arhiva este protejată cu criptografie post-cuantică',
+                                      'Archive is protected with post-quantum cryptography',
                                       style: TextStyle(color: Colors.green.shade700),
                                     ),
                                   ),
@@ -376,7 +376,7 @@ class _ArchiveDetailScreenState extends State<ArchiveDetailScreen> {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      'Cheia de criptare nu a fost găsită',
+                                      'Encryption key not found',
                                       style: TextStyle(color: Colors.orange.shade700),
                                     ),
                                   ),

@@ -27,15 +27,15 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> authenticate(String password) async {
-    // Simulez autentificarea cu parolă
-    // În implementarea reală, ar trebui să verifici parola cu hash-ul stocat
+    // Simulate password authentication
+    // In real implementation, you should verify password with stored hash
     final storedPasswordHash = await _secureStorage.read(key: 'password_hash');
     
     if (storedPasswordHash == null) {
-      // Prima autentificare - setează parola
+      // First authentication - set password
       return await _setInitialPassword(password);
     } else {
-      // Verifică parola existentă
+      // Verify existing password
       final passwordHash = _hashPassword(password);
       if (passwordHash == storedPasswordHash) {
         _isAuthenticated = true;

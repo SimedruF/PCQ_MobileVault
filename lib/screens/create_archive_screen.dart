@@ -72,7 +72,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
       setState(() {
         _isLoading = false;
       });
-      _showErrorSnackBar('Eroare la încărcarea cheilor: $e');
+      _showErrorSnackBar('Error loading keys: $e');
     }
   }
 
@@ -83,8 +83,8 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
       builder: (context) => AlertDialog(
         title: const Text('Nu există chei disponibile'),
         content: const Text(
-          'Pentru a crea o arhivă criptată, ai nevoie de cel puțin o cheie criptografică. '
-          'Vrei să creezi o cheie acum?'
+          'To create an encrypted archive, you need at least one cryptographic key. '
+          'Do you want to create a key now?'
         ),
         actions: [
           TextButton(
@@ -93,7 +93,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Creează cheie'),
+            child: const Text('Create key'),
           ),
         ],
       ),
@@ -107,7 +107,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
   }
 
   void _navigateToKeyCreation() {
-    // TODO: Navighează la ecranul de creare chei
+    // TODO: Navigate to key creation screen
     Navigator.of(context).pop();
   }
 
@@ -117,7 +117,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
       
       final hasPermission = await _fileService!.requestStoragePermissions();
       if (!hasPermission) {
-        _showErrorSnackBar('Permisiunile de acces la fișiere sunt necesare');
+        _showErrorSnackBar('File access permissions are required');
         return;
       }
 
@@ -129,7 +129,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
         });
       }
     } catch (e) {
-      _showErrorSnackBar('Eroare la selectarea fișierelor: $e');
+      _showErrorSnackBar('Error selecting files: $e');
     }
   }
 
@@ -139,7 +139,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
       
       final hasPermission = await _fileService!.requestStoragePermissions();
       if (!hasPermission) {
-        _showErrorSnackBar('Permisiunile de acces la fișiere sunt necesare');
+        _showErrorSnackBar('File access permissions are required');
         return;
       }
 
@@ -151,7 +151,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
         });
       }
     } catch (e) {
-      _showErrorSnackBar('Eroare la selectarea directorului: $e');
+      _showErrorSnackBar('Error selecting directory: $e');
     }
   }
 
@@ -169,7 +169,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
 
     try {
       if (_selectedDirectory != null) {
-        // Creează arhiva din director
+        // Create archive from directory
         await _fileService!.createEncryptedArchiveFromDirectory(
           directory: _selectedDirectory!,
           archiveName: _nameController.text.trim(),
@@ -177,7 +177,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
           cryptoKey: _selectedKey!,
         );
       } else {
-        // Creează arhiva din fișiere
+        // Create archive from files
         await _fileService!.createEncryptedArchive(
           files: _selectedFiles,
           archiveName: _nameController.text.trim(),
@@ -186,10 +186,10 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
         );
       }
 
-      _showSuccessSnackBar('Arhiva a fost creată cu succes');
+      _showSuccessSnackBar('Archive was created successfully');
       Navigator.of(context).pop();
     } catch (e) {
-      _showErrorSnackBar('Eroare la crearea arhivei: $e');
+      _showErrorSnackBar('Error creating archive: $e');
     }
 
     setState(() {
@@ -221,7 +221,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Creează arhivă nouă'),
+        title: const Text('Create new archive'),
         actions: [
           if (_currentStep == 2)
             TextButton(
@@ -283,14 +283,14 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                 }
               },
               steps: [
-                // Pasul 1: Selectare fișiere/director
+                // Step 1: Select files/directory
                 Step(
-                  title: const Text('Selectează conținutul'),
+                  title: const Text('Select content'),
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Alege fișierele sau directorul pe care vrei să îl criptezi:',
+                        'Choose the files or directory you want to encrypt:',
                         style: TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 16),
@@ -300,7 +300,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                             child: ElevatedButton.icon(
                               onPressed: _pickFiles,
                               icon: const Icon(Icons.insert_drive_file),
-                              label: const Text('Selectează fișiere'),
+                              label: const Text('Select files'),
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -316,7 +316,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                       const SizedBox(height: 16),
                       if (_selectedFiles.isNotEmpty) ...[
                         const Text(
-                          'Fișiere selectate:',
+                          'Selected files:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
@@ -345,9 +345,9 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                   isActive: _currentStep >= 0,
                 ),
                 
-                // Pasul 2: Detalii arhivă
+                // Step 2: Archive details
                 Step(
-                  title: const Text('Detalii arhivă'),
+                  title: const Text('Archive details'),
                   content: Form(
                     key: _formKey,
                     child: Column(
@@ -355,12 +355,12 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                         TextFormField(
                           controller: _nameController,
                           decoration: const InputDecoration(
-                            labelText: 'Numele arhivei',
+                            labelText: 'Archive name',
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Numele arhivei este obligatoriu';
+                              return 'Archive name is required';
                             }
                             return null;
                           },
@@ -380,14 +380,14 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                   isActive: _currentStep >= 1,
                 ),
                 
-                // Pasul 3: Selectare cheie
+                // Step 3: Key selection
                 Step(
-                  title: const Text('Cheia de criptare'),
+                  title: const Text('Encryption key'),
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Selectează cheia de criptare:',
+                        'Select encryption key:',
                         style: TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 16),
@@ -395,7 +395,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                         DropdownButtonFormField<CryptoKey>(
                           value: _selectedKey,
                           decoration: const InputDecoration(
-                            labelText: 'Cheia de criptare',
+                            labelText: 'Encryption key',
                             border: OutlineInputBorder(),
                           ),
                           items: _availableKeys.map((key) {
@@ -434,7 +434,7 @@ class _CreateArchiveScreenState extends State<CreateArchiveScreen> {
                                 const SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: _navigateToKeyCreation,
-                                  child: const Text('Creează o cheie'),
+                                  child: const Text('Create a key'),
                                 ),
                               ],
                             ),

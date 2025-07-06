@@ -29,7 +29,7 @@ class ArchiveCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header cu numele și acțiuni
+              // Header with name and actions
               Row(
                 children: [
                   Container(
@@ -86,7 +86,7 @@ class ArchiveCard extends StatelessWidget {
                           children: [
                             Icon(Icons.delete, color: Colors.red),
                             SizedBox(width: 8),
-                            Text('Șterge', style: TextStyle(color: Colors.red)),
+                            Text('Delete', style: TextStyle(color: Colors.red)),
                           ],
                         ),
                       ),
@@ -97,7 +97,7 @@ class ArchiveCard extends StatelessWidget {
               
               const SizedBox(height: 12),
               
-              // Informații despre arhivă
+              // Archive information
               Row(
                 children: [
                   _buildInfoChip(
